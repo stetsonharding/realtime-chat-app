@@ -12,7 +12,7 @@ function RoomForm() {
   return (
     <>
       {room ? (
-        <Chat />
+        <Chat room={room} />
       ) : (
         <div
           className="room"
