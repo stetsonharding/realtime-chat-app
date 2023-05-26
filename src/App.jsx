@@ -9,7 +9,11 @@ const cookies = new Cookies();
 function App() {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
 
-  return <div>{isAuth === false ? <Auth /> : <RoomForm />}</div>;
+  if (!isAuth) {
+    return <Auth setIsAuth={setIsAuth} />;
+  } else {
+    return <RoomForm />;
+  }
 }
 
 export default App;

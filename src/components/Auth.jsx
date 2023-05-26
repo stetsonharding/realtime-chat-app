@@ -1,17 +1,21 @@
 // import React from 'react'
 import { auth, provider } from "../firebase-config.jsx";
 import { signInWithPopup } from "firebase/auth";
-import Cookies from "universal-cookie";
 
-function Auth() {
+import PropTypes from "prop-types";
+
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+
+function Auth({ setIsAuth }) {
   //Authentication
   const signInWithGoogle = async () => {
     try {
       //Getting User info upon login
       const result = await signInWithPopup(auth, provider);
       //setting cookie so user is not logged out upon refresh
-      const cookies = new Cookies();
       cookies.set("auth-token", result.user.refreshToken);
+      setIsAuth(cookies.get("auth-token"));
     } catch (err) {
       console.error(err);
     }
@@ -24,5 +28,9 @@ function Auth() {
     </div>
   );
 }
+
+Auth.propTypes = {
+  setIsAuth: PropTypes.string,
+};
 
 export default Auth;
