@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import Chat from "../components/Chat.jsx";
 
 function RoomForm() {
   //state for users room number
@@ -11,7 +12,7 @@ function RoomForm() {
   return (
     <>
       {room ? (
-        <p>Chat</p>
+        <Chat />
       ) : (
         <div
           className="room"
