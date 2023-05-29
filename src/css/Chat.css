@@ -1,0 +1,22 @@
+form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+form input {
+  width: 40%;
+  height: 30px;
+  border: 1px solid blue;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+form .send-button {
+  height: 32px;
+  background-color: rgb(102, 102, 226);
+  color: white;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
