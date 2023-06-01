@@ -14,7 +14,8 @@ import PropTypes from "prop-types";
 
 function Chat({ room }) {
   //storing users typed message
-  const [message, setMessage] = useState("");
+  const [userMessage, setUserMessage] = useState("");
+  const [allMessages, setAllMessages] = useState([]);
 
   //Getting the database collection => database and collection of messages
   const messagesRef = collection(db, "messages");
@@ -25,22 +26,30 @@ function Chat({ room }) {
 
     //Get messages in real time
     onSnapshot(queryMessages, (snapshot) => {
-      console.log("new message");
+      //Grabbing data from messages
+      let messages = [];
+      snapshot.forEach((doc) => {
+        messages.push({ ...doc.data(), id: doc.id });
+      });
+
+      setAllMessages(messages);
     });
   }, []);
+
+  console.log(allMessages);
 
   //Adding users message/object to firebase/firestore
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    if (message) {
+    if (userMessage) {
       await addDoc(messagesRef, {
-        newMessage: message,
+        newMessage: userMessage,
         createdAt: serverTimestamp(),
         user: auth.currentUser.displayName,
         room,
       });
 
-      setMessage("");
+      setUserMessage("");
     }
 
     Chat.propTypes = {
@@ -50,13 +59,18 @@ function Chat({ room }) {
 
   return (
     <div className="chat">
+      <div>
+        {allMessages.map((message, index) => (
+          <h1 key={index}>{allMessages.newMessage}</h1>
+        ))}
+      </div>
       <form onSubmit={handleSubmitForm} className="new-message-form">
         <input
           type="text"
           className="new-message-input"
           placeholder="Type your message here"
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
+          onChange={(e) => setUserMessage(e.target.value)}
+          value={userMessage}
         />
         <button type="submit" className="send-button">
           Send
