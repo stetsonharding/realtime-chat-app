@@ -61,7 +61,7 @@ function Chat({ room }) {
     <div className="chat">
       <div>
         {allMessages.map((message, index) => (
-          <h1 key={index}>{allMessages.newMessage}</h1>
+          <h1 key={index}>{message.newMessage}</h1>
         ))}
       </div>
       <form onSubmit={handleSubmitForm} className="new-message-form">
