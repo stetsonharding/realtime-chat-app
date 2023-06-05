@@ -11,6 +11,7 @@ import { auth, db } from "../firebase-config";
 import "../css/Chat.css";
 
 import PropTypes from "prop-types";
+import RoomMessages from "./RoomMessages";
 
 function Chat({ room }) {
   //storing users typed message
@@ -24,8 +25,10 @@ function Chat({ room }) {
     //query for database
     const queryMessages = query(messagesRef, where("room", "==", room));
 
+    //Clean up snapshot when useEffect finishes
+
     //Get messages in real time
-    onSnapshot(queryMessages, (snapshot) => {
+    const unscribe = onSnapshot(queryMessages, (snapshot) => {
       //Grabbing data from messages
       let messages = [];
       snapshot.forEach((doc) => {
@@ -34,6 +37,11 @@ function Chat({ room }) {
 
       setAllMessages(messages);
     });
+
+    //Cleanup snapshot when useEffect finishes
+    return () => {
+      unscribe();
+    };
   }, []);
 
   console.log(allMessages);
@@ -60,9 +68,8 @@ function Chat({ room }) {
   return (
     <div className="chat">
       <div>
-        {allMessages.map((message, index) => (
-          <h1 key={index}>{message.newMessage}</h1>
-        ))}
+        {/* Render all Room messages here */}
+        <RoomMessages allMessages={allMessages} />
       </div>
       <form onSubmit={handleSubmitForm} className="new-message-form">
         <input
